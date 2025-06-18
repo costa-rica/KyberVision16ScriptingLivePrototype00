@@ -133,20 +133,7 @@ export default function ScriptingLivePortrait(props) {
             <Text style={styles.txtTeamName}>Team 2</Text>
           </View>
         </View>
-        {/* <Text>{props.orientation}</Text> */}
-        {/* <View style={styles.testActionsContainer}>
-          <ScrollView>
-            {scriptReducer.actionsArray.map((action, index) => (
-              <View key={index}>
-                <Text>
-                  Id: {action.id}, Type: {action.type}, Subtype:{" "}
-                  {action.subtype}, Quality: {action.quality}, PlayerId:{" "}
-                  {action.playerId}
-                </Text>
-              </View>
-            ))}
-          </ScrollView>
-        </View> */}
+
         <View style={styles.vwGroupScoreAndSets}>
           <View style={styles.vwGroupSetSuper}>
             <View style={styles.vwGroupSet}>
@@ -214,8 +201,6 @@ export default function ScriptingLivePortrait(props) {
           </View>
           <View style={styles.vwGroupSetSuper}>
             <View style={styles.vwGroupSet}>
-              {/* <Text>vwGroupSet</Text> */}
-              {/* <View style={styles.vwSetCircles}> */}
               {Array.from({ length: 3 }).map((_, index) => (
                 <TouchableOpacity
                   key={index}
@@ -234,7 +219,7 @@ export default function ScriptingLivePortrait(props) {
         </View>
         <View style={styles.vwGroupLastActionButtonsInstructionsAndLabels}>
           <View style={styles.vwGroupInstructionsAndLabels}>
-            <Text style={styles.txtInstructions}>Last scripted point</Text>
+            <Text style={styles.txtInstructions}>Last scripted action</Text>
             <View style={styles.vwGroupLabels}>
               <Text
                 style={[stylesDropDownPositionQuality, styles.txtGroupLabel]}
@@ -506,6 +491,7 @@ export default function ScriptingLivePortrait(props) {
             <ButtonKvImage
               onPress={() => {
                 console.log("pressed win");
+                props.handleSetScorePress("analyzed", 1);
               }}
               style={styles.btnRallyGroupBottom}
             >
@@ -514,7 +500,8 @@ export default function ScriptingLivePortrait(props) {
 
             <ButtonKvImage
               onPress={() => {
-                console.log("pressed lose");
+                // console.log("pressed lose");
+                props.handleSetScorePress("opponent", 1);
               }}
               style={styles.btnRallyGroupTop}
             >

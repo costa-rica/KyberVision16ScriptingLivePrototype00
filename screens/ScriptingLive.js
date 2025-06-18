@@ -574,6 +574,8 @@ export default function ScriptingLive({ navigation }) {
   const sendScriptReducerMatchActionsArrayToServer = async () => {
     console.log("----> sendScriptReducerMatchActionsArrayToServer");
 
+    alert("Sending recorded actions to Kyber Vision Database");
+
     const bodyObj = {
       actionsArray: scriptReducer.matchActionsArray,
       // matchId: userReducer.teamsArray.filter((tribe) => tribe.selected)[0]
