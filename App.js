@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "./screens_core/Home";
 import WelcomeScreen from "./screens/WelcomeScreen";
 import SplashScreen from "./screens/SplashScreen";
+import ScriptingLive from "./screens/ScriptingLive";
 
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
@@ -21,8 +22,7 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="SplashScreen" component={SplashScreen} />
-          <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
+          <Stack.Screen name="ScriptingLive" component={ScriptingLive} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

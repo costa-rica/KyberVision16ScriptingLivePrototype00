@@ -6,12 +6,15 @@ import ButtonKvImage from "./subcomponents/buttons/ButtonKvImage";
 // import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { loginUser } from "../reducers/user";
 import guestUserData from "../offlineData/userReducer.json";
+import { loginUser, updateTeamsArray } from "../reducers/user";
+import { updatePlayersArray } from "../reducers/script";
+import { useSelector } from "react-redux";
 
 export default function SplashScreen({ navigation }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const dispatch = useDispatch();
+  const userReducer = useSelector((state) => state.user);
 
   const handleLoginGuestOffline = () => {
     console.log("Guest login");
@@ -23,7 +26,13 @@ export default function SplashScreen({ navigation }) {
         username: guestUserData.user.username,
       })
     );
-    navigation.navigate("SelectTeamScreen");
+
+    const userReducerOffline = require("../offlineData/userReducer.json");
+    dispatch(updateTeamsArray(userReducerOffline.teamsArray));
+    // console.log("userReducerOffline", userReducerOffline.teamsArray);
+    const scriptReducerOffline = require("../offlineData/scriptReducer.json");
+    dispatch(updatePlayersArray(scriptReducerOffline.playersArray));
+    navigation.navigate("ScriptingLive");
   };
   return (
     <TemplateView>
@@ -47,6 +56,9 @@ export default function SplashScreen({ navigation }) {
               onPress={() => {
                 console.log("Register");
                 // navigation.navigate("Register");
+                console.log(
+                  `userReduer: ${JSON.stringify(userReducer.teamsArray)}`
+                );
               }}
               styleView={styles.btnEmailRegister}
               styleText={styles.btnEmailRegisterText}
@@ -94,6 +106,7 @@ export default function SplashScreen({ navigation }) {
               console.log("Login");
               // navigation.navigate("Login")
               handleLoginGuestOffline();
+              // navigation.navigate("ScriptingLive");
             }}
             style={styles.btnContinueWithoutLogin}
           >
