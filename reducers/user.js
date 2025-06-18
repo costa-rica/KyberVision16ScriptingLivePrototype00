@@ -14,8 +14,8 @@ const initialState = {
   // profile: null,
   //video: {}, //list received from API GET /videos
   // videosDownloadedStatusObj: {},
-  circleRadiusOuter: 30,
-  circleRadiusMiddle: 30,
+  circleRadiusOuter: 60,
+  circleRadiusMiddle: 45,
   circleRadiusInner: 30,
   scriptPositionGuides: false,
   defaultWheelColors: {
@@ -35,7 +35,7 @@ const initialState = {
     14: "rgba(165, 61, 141, 1)", // topMiddle
     15: "rgba(204, 60, 77, 1)", // topRight
     16: "rgba(206,95, 94, 1)", // rightTop
-    center: "gray",
+    center: "white",
   },
   selectedWheelColors: {
     1: "white", // right

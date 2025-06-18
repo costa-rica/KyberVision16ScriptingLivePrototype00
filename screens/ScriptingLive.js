@@ -20,6 +20,7 @@ import {
   setScriptingForPlayerObject,
   updateScriptId,
 } from "../reducers/script";
+import SwipePad from "./subcomponents/swipePads/SwipePad";
 
 export default function ScriptingLive({ navigation }) {
   // const [tapIsActive, setTapIsActive] = useState(true);
@@ -117,32 +118,119 @@ export default function ScriptingLive({ navigation }) {
     }
   };
 
+  // -----------------
+  //  Swipe Pad
+  // -----------------
+  const [padVisible, setPadVisible] = useState(false);
+  const [tapIsActive, setTapIsActive] = useState(true);
+  const [tapDetails, setTapDetails] = useState({
+    timestamp: "no date",
+    padPosCenterX: 0,
+    padPosCenterY: 0,
+  });
+  const [padPositionCenter, setPadPositionCenter] = useState({ x: 0, y: 0 });
+  const [swipeColorDict, setSwipeColorDict] = useState(
+    userReducer.defaultWheelColors
+  );
+  const stdSwipePadDefaultTextColor = "black";
+  const stdSwipePadDefaultTextFontSize = 10;
+  const defaultTextStyles = Object.fromEntries(
+    Array.from({ length: 16 }, (_, i) => [
+      i + 1, // Key: 1 to 16
+      {
+        color: stdSwipePadDefaultTextColor,
+        fontSize: stdSwipePadDefaultTextFontSize,
+        selected: false,
+      },
+    ])
+  );
+  const [swipeTextStyleDict, setSwipeTextStyleDict] =
+    useState(defaultTextStyles);
+
+  const [numTrianglesMiddle, setNumTrianglesMiddle] = useState(4); // 2, 4, or 5
+  const [numTrianglesOuter, setNumTrianglesOuter] = useState(12); // 8, 10 or 12
+
   // -------------
   // Gesture Stuff
   // -------------
   const gestureTapBegin = Gesture.Tap().onBegin((event) => {
     console.log("gestureTapBegin");
-    // if (tapIsActive) {
-    const timestamp = new Date().toISOString();
-    const { x, y, absoluteX, absoluteY } = event;
-    if (orientation == "portrait") {
-      calculateCenterCircle(
-        x,
-        y + scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.y
+    if (tapIsActive) {
+      const timestamp = new Date().toISOString();
+      const { x, y, absoluteX, absoluteY } = event;
+      if (orientation == "portrait") {
+        calculateCenterCircle(
+          x,
+          y + scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.y
+        );
+        setPadPositionCenter({
+          x: x,
+          y: y + scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.y,
+        });
+      } else {
+        calculateCenterCircle(x, y);
+        setPadPositionCenter({
+          x: x,
+          y: y,
+        });
+      }
+
+      setPadVisible(true);
+      setTapDetails({
+        timestamp,
+        // padPosCenterX: padPosCenterX,
+        // padPosCenterY: padPosCenterY,
+        padPosCenterX: padPositionCenter.x,
+        padPosCenterY: padPositionCenter.y,
+      });
+
+      console.log(
+        "padPositionCenter: " + padPositionCenter.x + ", " + padPositionCenter.y
       );
-    } else {
-      calculateCenterCircle(x, y);
+
+      setTapIsActive(false);
+
+      // calculateCenterCircle(absoluteX, absoluteY);
     }
-    // calculateCenterCircle(absoluteX, absoluteY);
-    // }
   });
 
-  const gestureTapEnd = Gesture.Tap().onEnd(() => {
-    console.log("gestureTapEnd");
-    // setTapIsActive(true);
-    addNewActionToScriptReducersActionsArrayNoWheel();
-    setCirclePosition({ x: 0, y: 0 });
-  });
+  const gestureTapEnd = Gesture.Tap()
+    .maxDuration(10000) // <-- basically if user keeps hold for more than 10 seconds the wheel will just stay there.
+    .onEnd((event) => {
+      console.log("gestureTapEnd");
+      // setTapIsActive(true);
+      // addNewActionToScriptReducersActionsArrayNoWheel();
+      // setCirclePosition({ x: 0, y: 0 });
+      const { x, y, absoluteX, absoluteY } = event;
+
+      // const swipePosX = calculatePadPositionCenter(absoluteX, absoluteY).x;
+      // const swipePosY = calculatePadPositionCenter(absoluteX, absoluteY).y;
+      const swipePosX = x;
+      const swipePosY = y;
+
+      // const distanceFromCenter = Math.sqrt(
+      //   Math.pow(swipePosX - tapDetails.padPosCenterX, 2) +
+      //     Math.pow(swipePosY - tapDetails.padPosCenterY, 2)
+      // );
+
+      const distanceFromCenter = Math.sqrt(
+        Math.pow(swipePosX - tapDetails.padPosCenterX, 2) +
+          Math.pow(swipePosY - tapDetails.padPosCenterY, 2)
+      );
+
+      console.log("swipePosX: " + swipePosX + " - " + tapDetails.padPosCenterX);
+      console.log("swipePosY: " + swipePosY + " - " + tapDetails.padPosCenterY);
+      console.log("distanceFromCenter: " + distanceFromCenter);
+
+      // // //// TESTING: commented below to show SwipePad
+      // if (distanceFromCenter < userReducer.circleRadiusInner) {
+      //   console.log("- close wheel");
+      //   setPadVisible(false);
+      //   setTapIsActive(true);
+      // }
+      setPadVisible(false);
+      setTapIsActive(true);
+    });
 
   const stylesCircle = {
     top: circlePosition.y,
@@ -350,11 +438,43 @@ export default function ScriptingLive({ navigation }) {
     }
   };
 
+  // -----------------
+  //  Swipe Pad
+  // -----------------
+
+  const styleVwMainPosition = {
+    position: "absolute",
+    left: padPositionCenter.x, // Center modal horizontally
+    top: padPositionCenter.y, // Center modal vertically
+    // left: 100,
+    // top: 100,
+  };
+
+  // Determine which component to render
+  const renderSwipePad = () => {
+    if (padVisible) {
+      return (
+        <SwipePad
+          styleVwMainPosition={styleVwMainPosition}
+          swipeColorDict={swipeColorDict}
+          swipeTextStyleDict={swipeTextStyleDict}
+          numTrianglesMiddle={numTrianglesMiddle}
+          numTrianglesOuter={numTrianglesOuter}
+        />
+      );
+    }
+    // return null; // Nothing renders if all are false
+  };
+
   return orientation == "portrait" ? (
     <TemplateViewWithTopChildrenSmall
       navigation={navigation}
       topChildren={topChildren}
     >
+      <View style={{ position: "absolute", left: 20, bottom: 10 }}>
+        <Text>circleRadiusInner: {userReducer.circleRadiusInner}</Text>
+        <Text>circleRadiusMiddle: {userReducer.circleRadiusMiddle}</Text>
+      </View>
       <ScriptingPortrait
         combinedGestures={combinedGestures}
         orientation={orientation}
@@ -404,7 +524,8 @@ export default function ScriptingLive({ navigation }) {
           sendScriptReducerMatchActionsArrayToServer
         }
       />
-      {circlePosition.y > 0 && <View style={stylesCircle} />}
+      {/* {circlePosition.y > 0 && <View style={stylesCircle} />} */}
+      {renderSwipePad()}
     </TemplateViewWithTopChildrenSmall>
   ) : (
     <View>
