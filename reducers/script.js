@@ -17,6 +17,20 @@ const initialState = {
   // --- These are meant to be hardcoded and available throughout the app --- NO MODIFY in code
   typesArray: ["Bl", "Def", "Set", "Att", "tap"],
   subtypesArray: [
+    "B2",
+    "B1",
+    "BC",
+    "FB",
+    "AC",
+    "NS",
+    "Q",
+    "Hi",
+    "Tip",
+    "Pwr",
+    "Rol",
+    "B3",
+  ],
+  qualityArrayOuterCircle: [
     "0",
     "-",
     "+",

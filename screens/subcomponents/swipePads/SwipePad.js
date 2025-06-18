@@ -385,7 +385,7 @@ export default function SwipePad(props) {
             }}
           >
             {dictTextPositionsOuter[index + 5].selected
-              ? scriptReducer.subtypesArray[index]
+              ? scriptReducer.qualityArrayOuterCircle[index]
               : null}
           </Text>
         </View>

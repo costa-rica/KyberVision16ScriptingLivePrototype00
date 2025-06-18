@@ -383,21 +383,21 @@ export default function ScriptingLive({ navigation }) {
           // console.log("--- Right Top ---");
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
           setLastActionQuality(
-            scriptReducer.subtypesArray[wheelPositionOuter - 5]
+            scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
           );
         } else if (Math.abs(relativeToPadCenterY) < boundary15Y) {
           // console.log("--- Right Middle ---");
           wheelPositionOuter = 5;
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
           setLastActionQuality(
-            scriptReducer.subtypesArray[wheelPositionOuter - 5]
+            scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
           );
         } else {
           // console.log("--- Right Bottom ---");
           wheelPositionOuter = 6;
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
           setLastActionQuality(
-            scriptReducer.subtypesArray[wheelPositionOuter - 5]
+            scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
           );
         }
       }
@@ -412,21 +412,21 @@ export default function ScriptingLive({ navigation }) {
           // console.log("--- Bottom Right ---");
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
           setLastActionQuality(
-            scriptReducer.subtypesArray[wheelPositionOuter - 5]
+            scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
           );
         } else if (Math.abs(relativeToPadCenterX) < boundary75X) {
           // console.log("--- Bottom Middle ---");
           wheelPositionOuter = 8;
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
           setLastActionQuality(
-            scriptReducer.subtypesArray[wheelPositionOuter - 5]
+            scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
           );
         } else {
           // console.log("--- Bottom Left ---");
           wheelPositionOuter = 9;
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
           setLastActionQuality(
-            scriptReducer.subtypesArray[wheelPositionOuter - 5]
+            scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
           );
         }
       }
@@ -434,82 +434,52 @@ export default function ScriptingLive({ navigation }) {
       // Left
       wheelPositionMiddle = 3;
       handleSwipeColorChange(wheelPositionMiddle);
-      // setCurrentActionType(scriptReducer.typesArray[wheelPositionMiddle - 1]); // Set
-      // setCurrentActionSubtype("");
+      setLastActionType(scriptReducer.typesArray[wheelPositionMiddle - 1]);
       if (!inMiddleCircle) {
         wheelPositionOuter = 10;
         if (relativeToPadCenterY > Math.abs(boundary15Y)) {
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
-          setCurrentActionType(
-            scriptReducer.typesArray[wheelPositionMiddle - 1]
+          setLastActionQuality(
+            scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
           ); // Set
-          setCurrentActionSubtype(
-            scriptReducer.subtypesArray[wheelPositionOuter - 5]
-          );
         } else if (relativeToPadCenterY > boundary15Y) {
           wheelPositionOuter = 11;
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
-          setCurrentActionType(
-            scriptReducer.typesArray[wheelPositionMiddle - 1]
+          setLastActionQuality(
+            scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
           ); // Set
-
-          setCurrentActionSubtype(
-            scriptReducer.subtypesArray[wheelPositionOuter - 5]
-          );
         } else {
           wheelPositionOuter = 12;
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
-          setCurrentActionType(
-            scriptReducer.typesArray[wheelPositionMiddle - 1]
+          setLastActionQuality(
+            scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
           ); // Set
-          setCurrentActionSubtype(
-            scriptReducer.subtypesArray[wheelPositionOuter - 5]
-          );
         }
       }
     } else if (relativeToPadCenterY < boundary45Y) {
       // Top
-      // handleSwipeColorChange(4);
-      // setCurrentActionType(4);
       wheelPositionMiddle = 4;
       handleSwipeColorChange(wheelPositionMiddle);
-      setCurrentActionType(scriptReducer.typesArray[wheelPositionMiddle - 1]); // Att
-      setCurrentActionSubtype("");
+      setLastActionType(scriptReducer.typesArray[wheelPositionMiddle - 1]);
       if (!inMiddleCircle) {
         wheelPositionOuter = 13;
-        // setTestOuterWheelPosition(wheelPositionOuter-5)
         if (relativeToPadCenterX < boundary75X) {
-          // handleSwipeColorChange(4, 13);
-          // setCurrentActionType(13);
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
-          setCurrentActionType(
-            scriptReducer.typesArray[wheelPositionMiddle - 1]
-          ); // Def
-          setCurrentActionSubtype(
-            scriptReducer.subtypesArray[wheelPositionOuter - 5]
-          );
+          setLastActionQuality(
+            scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
+          ); // Att
         } else if (relativeToPadCenterX < Math.abs(boundary75X)) {
           wheelPositionOuter = 14;
-          // setTestOuterWheelPosition(wheelPositionOuter-5)
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
-          setCurrentActionType(
-            scriptReducer.typesArray[wheelPositionMiddle - 1]
+          setLastActionQuality(
+            scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
           ); // Att
-          setCurrentActionSubtype(
-            scriptReducer.subtypesArray[wheelPositionOuter - 5]
-          );
         } else {
-          // handleSwipeColorChange(4, 15);
-          // setCurrentActionType(15);
           wheelPositionOuter = 15;
-          // setTestOuterWheelPosition(wheelPositionOuter-5)
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
-          setCurrentActionType(
-            scriptReducer.typesArray[wheelPositionMiddle - 1]
+          setLastActionQuality(
+            scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
           ); // Att
-          setCurrentActionSubtype(
-            scriptReducer.subtypesArray[wheelPositionOuter - 5]
-          );
         }
       }
     } else {
