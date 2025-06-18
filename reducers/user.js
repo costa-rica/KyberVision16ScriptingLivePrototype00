@@ -38,23 +38,23 @@ const initialState = {
     center: "white",
   },
   selectedWheelColors: {
-    1: "white", // right
+    1: "#BD9AC1", // right
     // 2: "brown", // right
-    2: "white", // bottom
-    3: "white", // left
-    4: "white", // top
-    5: "red",
-    6: "red",
-    7: "white",
-    8: "white",
-    9: "white",
-    10: "white",
-    11: "white",
-    12: "white",
-    13: "white",
-    14: "white",
-    15: "white",
-    16: "red",
+    2: "#BD9AC1", // bottom
+    3: "#BD9AC1", // left
+    4: "#BD9AC1", // top
+    5: "#BD9AC1",
+    6: "#BD9AC1",
+    7: "#BD9AC1",
+    8: "#BD9AC1",
+    9: "#BD9AC1",
+    10: "#BD9AC1",
+    11: "#BD9AC1",
+    12: "#BD9AC1",
+    13: "#BD9AC1",
+    14: "#BD9AC1",
+    15: "#BD9AC1",
+    16: "#BD9AC1",
     center: "white",
   },
   swipePadTextStyleMiddleCircle: Object.fromEntries(
@@ -79,14 +79,14 @@ const initialState = {
   // ),
   swipePadTextStyleOuterCircle: {
     1: { color: "black", fontSize: 14, fontWeight: "bold" }, // rightMiddle
-    2: { color: "white", fontSize: 14, fontWeight: "bold" }, // rightBottom
+    2: { color: "white", fontSize: 16, fontWeight: "bold" }, // rightBottom
     3: { color: "black", fontSize: 14, fontWeight: "bold" }, // bottomRight
     4: { color: "black", fontSize: 14, fontWeight: "bold" }, // bottomMiddle
-    5: { color: "white", fontSize: 14, fontWeight: "bold" }, // bottomLeft
-    6: { color: "white", fontSize: 14, fontWeight: "bold" }, // leftBottom
+    5: { color: "white", fontSize: 16, fontWeight: "bold" }, // bottomLeft
+    6: { color: "white", fontSize: 16, fontWeight: "bold" }, // leftBottom
     7: { color: "black", fontSize: 14, fontWeight: "bold" }, // leftMiddle
     8: { color: "black", fontSize: 14, fontWeight: "bold" }, // leftTop
-    9: { color: "black", fontSize: 14, fontWeight: "bold" }, // topleft
+    9: { color: "white", fontSize: 16, fontWeight: "bold" }, // topleft
     10: { color: "black", fontSize: 14, fontWeight: "bold" }, // topMiddle
     11: { color: "black", fontSize: 14, fontWeight: "bold" }, // topRight
     12: { color: "black", fontSize: 14, fontWeight: "bold" }, // rightTop

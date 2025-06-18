@@ -201,7 +201,7 @@ export default function ScriptingLive({ navigation }) {
   });
 
   const gestureTapEnd = Gesture.Tap()
-    .maxDuration(1000) // <-- basically if user keeps hold for more than 10 seconds the wheel will just stay there.
+    .maxDuration(10000) // <-- basically if user keeps hold for more than 10 seconds the wheel will just stay there.
     .onEnd((event) => {
       console.log("gestureTapEnd");
       // setTapIsActive(true);

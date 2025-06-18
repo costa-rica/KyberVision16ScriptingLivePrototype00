@@ -180,7 +180,7 @@ export default function SwipePad(props) {
   const dictTextPositionsOuter = {
     ...dictTextPositionsOuterPlaceholder,
     5: {
-      // Bottom-Right (B2)
+      // Right-Middle (B2, new 0)
       // top: userReducer.circleRadiusOuter - estimatedHeightOfTextOuter,
       // left: userReducer.circleRadiusOuter * 2 + estimatedWidthOfTextOuter,
       top: userReducer.circleRadiusOuter - estimatedHeightOfTextOuter,
@@ -188,77 +188,70 @@ export default function SwipePad(props) {
       selected: true,
     },
     6: {
-      // Bottom-Right (B1)
-      top: userReducer.circleRadiusOuter * 1.25,
-      left: userReducer.circleRadiusOuter * 2 - estimatedWidthOfTextOuter * 1.5,
+      // Right-Bottom (B1, new -)
+      top: userReducer.circleRadiusOuter * 1.3,
+      left: userReducer.circleRadiusOuter * 2 - estimatedWidthOfTextOuter * 2,
       selected: true,
     },
     7: {
-      // Bottom-Right (BC)
-      top: userReducer.circleRadiusOuter * 2 - estimatedHeightOfTextOuter,
-      left: userReducer.circleRadiusOuter * 1.5,
+      // Bottom-Right (BC, new +)
+      top: userReducer.circleRadiusOuter * 2 - estimatedHeightOfTextOuter * 2.5,
+      left: userReducer.circleRadiusOuter * 1.4,
       selected: true,
     },
     8: {
-      // Bottom-Center (FB)
-      // top:
-      //   userReducer.circleRadiusOuter * 2 -
-      //   (userReducer.circleRadiusOuter - userReducer.circleRadiusMiddle),
-      top: userReducer.circleRadiusOuter * 2,
-      left: userReducer.circleRadiusOuter - estimatedWidthOfTextOuter,
+      // Bottom-Center (FB, new 0)
+      top: userReducer.circleRadiusOuter * 1.75,
+      left: userReducer.circleRadiusOuter - estimatedWidthOfTextOuter * 0.75,
       selected: true,
     },
     9: {
-      // Bottom-Left (AC)
-      top: userReducer.circleRadiusOuter * 2 - estimatedHeightOfTextOuter,
-      left: userReducer.circleRadiusOuter * 0.3,
+      // Bottom-Left (AC, new -)
+      top: userReducer.circleRadiusOuter * 2 - estimatedHeightOfTextOuter * 2.8,
+      left: userReducer.circleRadiusOuter * 0.5,
       selected: true,
     },
     10: {
-      // Left-Bottom (NS)
-      top: userReducer.circleRadiusOuter * 1.5,
-      left: -estimatedWidthOfTextOuter,
+      // Left-Bottom (NS, new -)
+      top: userReducer.circleRadiusOuter * 1.3,
+      left: estimatedWidthOfTextOuter * 1.5,
       selected: true,
     },
     11: {
-      // Right-Center (Q)
+      // Left-Middle (Q, new 0)
       top: userReducer.circleRadiusOuter - estimatedHeightOfTextOuter,
-      left: -estimatedWidthOfTextOuter * 2,
+      left: estimatedWidthOfTextOuter * 0.5,
       selected: true,
     },
     12: {
-      // Left-Top (Hi)
-      top: userReducer.circleRadiusOuter * 0.3,
-      left: -estimatedWidthOfTextOuter,
+      // Left-Top (Hi, new +)
+      top: userReducer.circleRadiusOuter * 0.4,
+      left: estimatedWidthOfTextOuter * 1.3,
       selected: true,
     },
     13: {
-      // Top-Left (Tip)
-      top: -estimatedHeightOfTextOuter,
-      // top: 20,
-      left: userReducer.circleRadiusOuter * 0.3,
+      // Top-Left (Tip, new -)
+      top: estimatedHeightOfTextOuter * 0.5,
+      left: userReducer.circleRadiusOuter * 0.5,
       selected: true,
     },
 
     14: {
-      // Top-Center (Pwr)
-      top: -estimatedHeightOfTextOuter * 2,
-      left: userReducer.circleRadiusOuter - estimatedWidthOfTextOuter,
+      // Top-Center (Pwr, new 0)
+      top: estimatedHeightOfTextOuter * 0.2,
+      left: userReducer.circleRadiusOuter - estimatedWidthOfTextOuter * 0.6,
       selected: true,
     },
     15: {
-      // Top-Right (Roll)
-      top: -estimatedHeightOfTextOuter,
-      // top: 20,
-      left: userReducer.circleRadiusOuter * 1.5,
+      // Top-Right (Roll, new +)
+      top: estimatedHeightOfTextOuter * 0.5,
+      left: userReducer.circleRadiusOuter * 1.35,
       selected: true,
     },
     16: {
-      // Top-Right (Roll)
-      top: userReducer.circleRadiusOuter * 0.3,
-      // top: 20,
-      // left: userReducer.circleRadiusOuter * 1.5,
-      left: userReducer.circleRadiusOuter * 2 - estimatedWidthOfTextOuter,
+      // Top-Right (Roll, new +)
+      top: userReducer.circleRadiusOuter * 0.4,
+      left: userReducer.circleRadiusOuter * 2 - estimatedWidthOfTextOuter * 2.5,
       selected: true,
     },
   };
