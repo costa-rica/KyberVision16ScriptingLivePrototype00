@@ -181,14 +181,16 @@ export default function SwipePad(props) {
     ...dictTextPositionsOuterPlaceholder,
     5: {
       // Bottom-Right (B2)
+      // top: userReducer.circleRadiusOuter - estimatedHeightOfTextOuter,
+      // left: userReducer.circleRadiusOuter * 2 + estimatedWidthOfTextOuter,
       top: userReducer.circleRadiusOuter - estimatedHeightOfTextOuter,
-      left: userReducer.circleRadiusOuter * 2 + estimatedWidthOfTextOuter,
+      left: userReducer.circleRadiusOuter * 2 - estimatedWidthOfTextOuter * 1.5,
       selected: true,
     },
     6: {
       // Bottom-Right (B1)
-      top: userReducer.circleRadiusOuter * 1.5,
-      left: userReducer.circleRadiusOuter * 2 - estimatedWidthOfTextOuter,
+      top: userReducer.circleRadiusOuter * 1.25,
+      left: userReducer.circleRadiusOuter * 2 - estimatedWidthOfTextOuter * 1.5,
       selected: true,
     },
     7: {

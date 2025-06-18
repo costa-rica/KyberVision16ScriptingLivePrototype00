@@ -14,27 +14,27 @@ const initialState = {
   // profile: null,
   //video: {}, //list received from API GET /videos
   // videosDownloadedStatusObj: {},
-  circleRadiusOuter: 60,
-  circleRadiusMiddle: 45,
-  circleRadiusInner: 30,
+  circleRadiusOuter: 70,
+  circleRadiusMiddle: 50,
+  circleRadiusInner: 20,
   scriptPositionGuides: false,
   defaultWheelColors: {
     1: "rgba(230, 144, 64, 1)", // right
     2: "rgba(147, 191, 81, 1)", // bottom
     3: "rgba(60, 126, 181, 1)", // left
     4: "rgba(178, 61, 149, 1)", // top
-    5: "rgba(212, 134, 66, 1)", // rightMiddle
-    6: "rgba(217, 168, 60, 1)", // rightBottom
-    7: "rgba(108,161,29,1)", // bottomRight
-    8: "rgba(126, 162, 79, 1)", // bottomMiddle
-    9: "rgba(60, 154, 108, 1)", // bottomLeft
-    10: "rgba(60, 159, 164, 1)", // leftBottom
-    11: "rgba(60, 120, 169, 1)", // leftMiddle
-    12: "rgba(60, 100, 160, 1)", // leftTop
-    13: "rgba(116, 82, 144, 1)", // topleft
-    14: "rgba(165, 61, 141, 1)", // topMiddle
-    15: "rgba(204, 60, 77, 1)", // topRight
-    16: "rgba(206,95, 94, 1)", // rightTop
+    5: "gray", // rightMiddle
+    6: "black", // rightBottom
+    7: "white", // bottomRight
+    8: "gray", // bottomMiddle
+    9: "black", // bottomLeft
+    10: "black", // leftBottom
+    11: "gray", // leftMiddle
+    12: "white", // leftTop
+    13: "black", // topleft
+    14: "gray", // topMiddle
+    15: "white", // topRight
+    16: "white", // rightTop
     center: "white",
   },
   selectedWheelColors: {
@@ -43,8 +43,8 @@ const initialState = {
     2: "white", // bottom
     3: "white", // left
     4: "white", // top
-    5: "white",
-    6: "white",
+    5: "red",
+    6: "red",
     7: "white",
     8: "white",
     9: "white",
@@ -54,7 +54,7 @@ const initialState = {
     13: "white",
     14: "white",
     15: "white",
-    16: "white",
+    16: "red",
     center: "white",
   },
   swipePadTextStyleMiddleCircle: Object.fromEntries(
@@ -67,16 +67,30 @@ const initialState = {
       },
     ])
   ),
-  swipePadTextStyleOuterCircle: Object.fromEntries(
-    Array.from({ length: 12 }, (_, i) => [
-      i + 1, // Key: 1 to 12`
-      {
-        color: "black",
-        fontSize: 14,
-        // fontWeight: "bold",
-      },
-    ])
-  ),
+  // swipePadTextStyleOuterCircle: Object.fromEntries(
+  //   Array.from({ length: 12 }, (_, i) => [
+  //     i + 1, // Key: 1 to 12`
+  //     {
+  //       color: "black",
+  //       fontSize: 14,
+  //       // fontWeight: "bold",
+  //     },
+  //   ])
+  // ),
+  swipePadTextStyleOuterCircle: {
+    1: { color: "black", fontSize: 14, fontWeight: "bold" }, // rightMiddle
+    2: { color: "white", fontSize: 14, fontWeight: "bold" }, // rightBottom
+    3: { color: "black", fontSize: 14, fontWeight: "bold" }, // bottomRight
+    4: { color: "black", fontSize: 14, fontWeight: "bold" }, // bottomMiddle
+    5: { color: "white", fontSize: 14, fontWeight: "bold" }, // bottomLeft
+    6: { color: "white", fontSize: 14, fontWeight: "bold" }, // leftBottom
+    7: { color: "black", fontSize: 14, fontWeight: "bold" }, // leftMiddle
+    8: { color: "black", fontSize: 14, fontWeight: "bold" }, // leftTop
+    9: { color: "black", fontSize: 14, fontWeight: "bold" }, // topleft
+    10: { color: "black", fontSize: 14, fontWeight: "bold" }, // topMiddle
+    11: { color: "black", fontSize: 14, fontWeight: "bold" }, // topRight
+    12: { color: "black", fontSize: 14, fontWeight: "bold" }, // rightTop
+  },
 };
 
 export const userSlice = createSlice({

@@ -157,14 +157,12 @@ export default function ScriptingLive({ navigation }) {
   // -------------
   const gestureTapBegin = Gesture.Tap().onBegin((event) => {
     console.log("gestureTapBegin");
+    setSwipeColorDict(userReducer.defaultWheelColors);
+    setSwipeTextStyleDict(defaultTextStyles);
     if (tapIsActive) {
       const timestamp = new Date().toISOString();
       const { x, y, absoluteX, absoluteY } = event;
       if (orientation == "portrait") {
-        calculateCenterCircle(
-          x,
-          y + scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.y
-        );
         setPadPositionCenter({
           x: x - userReducer.circleRadiusOuter,
           y:
@@ -180,7 +178,6 @@ export default function ScriptingLive({ navigation }) {
           }`
         );
       } else {
-        calculateCenterCircle(x, y);
         setPadPositionCenter({
           x: x,
           y: y,
@@ -190,24 +187,21 @@ export default function ScriptingLive({ navigation }) {
       setPadVisible(true);
       setTapDetails({
         timestamp,
-        // padPosCenterX: padPosCenterX,
-        // padPosCenterY: padPosCenterY,
-        padPosCenterX: padPositionCenter.x,
-        padPosCenterY: padPositionCenter.y,
+        // padPosCenterX: padPositionCenter.x,
+        // padPosCenterY: padPositionCenter.y,
+        padPosCenterX: x - userReducer.circleRadiusOuter,
+        padPosCenterY:
+          y +
+          scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.y -
+          userReducer.circleRadiusOuter,
       });
 
-      console.log(
-        "padPositionCenter: " + padPositionCenter.x + ", " + padPositionCenter.y
-      );
-
       setTapIsActive(false);
-
-      // calculateCenterCircle(absoluteX, absoluteY);
     }
   });
 
   const gestureTapEnd = Gesture.Tap()
-    .maxDuration(10000) // <-- basically if user keeps hold for more than 10 seconds the wheel will just stay there.
+    .maxDuration(1000) // <-- basically if user keeps hold for more than 10 seconds the wheel will just stay there.
     .onEnd((event) => {
       console.log("gestureTapEnd");
       // setTapIsActive(true);
@@ -223,26 +217,12 @@ export default function ScriptingLive({ navigation }) {
         scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.y -
         userReducer.circleRadiusOuter;
 
-      // const distanceFromCenter = Math.sqrt(
-      //   Math.pow(swipePosX - tapDetails.padPosCenterX, 2) +
-      //     Math.pow(swipePosY - tapDetails.padPosCenterY, 2)
-      // );
-
       const distanceFromCenter = Math.sqrt(
         Math.pow(swipePosX - tapDetails.padPosCenterX, 2) +
           Math.pow(swipePosY - tapDetails.padPosCenterY, 2)
       );
       console.log(`TapEnd - X: ${swipePosX} - Y: ${swipePosY}`);
-      // console.log("swipePosX: " + swipePosX + " - " + tapDetails.padPosCenterX);
-      // console.log("swipePosY: " + swipePosY + " - " + tapDetails.padPosCenterY);
-      // console.log("distanceFromCenter: " + distanceFromCenter);
 
-      // // //// TESTING: commented below to show SwipePad
-      // if (distanceFromCenter < userReducer.circleRadiusInner) {
-      //   console.log("- close wheel");
-      //   setPadVisible(false);
-      //   setTapIsActive(true);
-      // }
       setPadVisible(false);
       setTapIsActive(true);
     });
@@ -297,10 +277,36 @@ export default function ScriptingLive({ navigation }) {
     // }
   );
 
+  // Combine swipe and tap gestures
+  const gestureSwipeOnEnd = Gesture.Pan().onEnd((event) => {
+    const { x, y, translationX, translationY, absoluteX, absoluteY } = event;
+
+    const swipePosX = x - userReducer.circleRadiusOuter;
+    const swipePosY =
+      y +
+      scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.y -
+      userReducer.circleRadiusOuter;
+    // const swipePosX = calculatePadPositionCenter(x, y).x;
+    // const swipePosY = calculatePadPositionCenter(x, y).y;
+
+    const distanceFromCenter = Math.sqrt(
+      Math.pow(swipePosX - tapDetails.padPosCenterX, 2) +
+        Math.pow(swipePosY - tapDetails.padPosCenterY, 2)
+    );
+
+    // if (distanceFromCenter > userReducer.circleRadiusInner) {
+    //   addNewActionToScriptReducersActionsArray({
+    //     type: currentActionType,
+    //     subtype: currentActionSubtype,
+    //   });
+    // }
+  });
+
   const combinedGestures = Gesture.Simultaneous(
     gestureTapBegin,
     gestureTapEnd,
-    gestureSwipeOnChange
+    gestureSwipeOnChange,
+    gestureSwipeOnEnd
   );
 
   // -----------------
@@ -556,15 +562,15 @@ export default function ScriptingLive({ navigation }) {
     position: "absolute",
   };
 
-  const calculateCenterCircle = (x, y) => {
-    const centerX = x - circleSize.width / 2;
-    const centerY = y - circleSize.height / 2;
+  // const calculateCenterCircle = (x, y) => {
+  //   const centerX = x - circleSize.width / 2;
+  //   const centerY = y - circleSize.height / 2;
 
-    setCirclePosition({
-      x: centerX,
-      y: centerY,
-    });
-  };
+  //   setCirclePosition({
+  //     x: centerX,
+  //     y: centerY,
+  //   });
+  // };
 
   // -----------------
   //  Add Action
@@ -784,7 +790,10 @@ export default function ScriptingLive({ navigation }) {
       topChildren={topChildren}
     >
       <View style={{ position: "absolute", left: 20, bottom: 10 }}>
-        <Text>circleRadiusInner: {userReducer.circleRadiusInner}</Text>
+        <Text>
+          padPositionCenter: {padPositionCenter.x.toFixed(0)},{" "}
+          {padPositionCenter.y.toFixed(0)}
+        </Text>
         <Text>circleRadiusMiddle: {userReducer.circleRadiusMiddle}</Text>
       </View>
       <ScriptingPortrait
