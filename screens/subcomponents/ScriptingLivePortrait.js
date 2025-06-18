@@ -39,8 +39,8 @@ export default function ScriptingLivePortrait(props) {
   const dispatch = useDispatch();
 
   const handleVwVolleyballCourtAndGestSuperLayout = (event) => {
-    console.log("handleVwVolleyballCourtAndGestSuperLayout");
-    console.log(event.nativeEvent.layout);
+    // console.log("handleVwVolleyballCourtAndGestSuperLayout");
+    // console.log(event.nativeEvent.layout);
     const { width, height, x, y } = event.nativeEvent.layout;
 
     dispatch(

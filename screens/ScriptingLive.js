@@ -221,7 +221,7 @@ export default function ScriptingLive({ navigation }) {
         Math.pow(swipePosX - tapDetails.padPosCenterX, 2) +
           Math.pow(swipePosY - tapDetails.padPosCenterY, 2)
       );
-      console.log(`TapEnd - X: ${swipePosX} - Y: ${swipePosY}`);
+      // console.log(`TapEnd - X: ${swipePosX} - Y: ${swipePosY}`);
 
       setPadVisible(false);
       setTapIsActive(true);
@@ -254,7 +254,7 @@ export default function ScriptingLive({ navigation }) {
       // const relativeToPadCenterY =
       //   swipePosY - tapDetails.padPosCenterY - userReducer.circleRadiusOuter;
 
-      console.log(`Swipe - X: ${swipePosX} - Y: ${swipePosY}`);
+      // console.log(`Swipe - X: ${swipePosX} - Y: ${swipePosY}`);
       // console.log("relativeToPadCenterX: " + relativeToPadCenterX);
       // console.log("relativeToPadCenterY: " + relativeToPadCenterY);
 
@@ -375,52 +375,28 @@ export default function ScriptingLive({ navigation }) {
     if (Math.abs(relativeToPadCenterY) < boundary45Y) {
       // Right side
       wheelPositionMiddle = 1;
-
-      // setCurrentActionType(1);
       handleSwipeColorChange(wheelPositionMiddle);
-      setCurrentActionType(scriptReducer.typesArray[wheelPositionMiddle - 1]); // Bloc
-      setCurrentActionSubtype("");
+      setLastActionType(scriptReducer.typesArray[wheelPositionMiddle - 1]);
       if (!inMiddleCircle) {
         wheelPositionOuter = 16; // like 16
-        // setTestOuterWheelPosition(wheelPositionOuter-5)
         if (-relativeToPadCenterY > boundary15Y) {
+          // console.log("--- Right Top ---");
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
-          setCurrentActionType(
-            scriptReducer.typesArray[wheelPositionMiddle - 1]
-          );
-          setCurrentActionSubtype(
+          setLastActionQuality(
             scriptReducer.subtypesArray[wheelPositionOuter - 5]
           );
-          // setCurrentActionSubtype(
-          //   scriptReducer.subtypesArray[testOuterWheelPosition]
-          // );
         } else if (Math.abs(relativeToPadCenterY) < boundary15Y) {
-          // setSwipeColorDict(defaultColors);
-          // handleSwipeColorChange(1, 5);
-          // setCurrentActionType(5);
+          // console.log("--- Right Middle ---");
           wheelPositionOuter = 5;
-          // setTestOuterWheelPosition(wheelPositionOuter-5)
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
-          setCurrentActionType(
-            scriptReducer.typesArray[wheelPositionMiddle - 1]
-          ); // Bloc
-          setCurrentActionSubtype(
+          setLastActionQuality(
             scriptReducer.subtypesArray[wheelPositionOuter - 5]
           );
-          // setCurrentActionSubtype(
-          //   scriptReducer.subtypesArray[testOuterWheelPosition]
-          // );
         } else {
+          // console.log("--- Right Bottom ---");
           wheelPositionOuter = 6;
-          // setTestOuterWheelPosition(wheelPositionOuter-5)
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
-          setCurrentActionType(
-            scriptReducer.typesArray[wheelPositionMiddle - 1]
-          ); // Bloc
-          // setCurrentActionSubtype(
-          //   scriptReducer.subtypesArray[testOuterWheelPosition]
-          // );
-          setCurrentActionSubtype(
+          setLastActionQuality(
             scriptReducer.subtypesArray[wheelPositionOuter - 5]
           );
         }
@@ -428,36 +404,28 @@ export default function ScriptingLive({ navigation }) {
     } else if (relativeToPadCenterY > Math.abs(boundary45Y)) {
       // Bottom
       wheelPositionMiddle = 2;
-
       handleSwipeColorChange(wheelPositionMiddle);
-      setCurrentActionType(scriptReducer.typesArray[wheelPositionMiddle - 1]); // Def
-      setCurrentActionSubtype("");
+      setLastActionType(scriptReducer.typesArray[wheelPositionMiddle - 1]);
       if (!inMiddleCircle) {
         wheelPositionOuter = 7;
         if (relativeToPadCenterX > boundary75X) {
+          // console.log("--- Bottom Right ---");
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
-          setCurrentActionType(
-            scriptReducer.typesArray[wheelPositionMiddle - 1]
-          ); // Def
-          setCurrentActionSubtype(
+          setLastActionQuality(
             scriptReducer.subtypesArray[wheelPositionOuter - 5]
           );
         } else if (Math.abs(relativeToPadCenterX) < boundary75X) {
+          // console.log("--- Bottom Middle ---");
           wheelPositionOuter = 8;
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
-          setCurrentActionType(
-            scriptReducer.typesArray[wheelPositionMiddle - 1]
-          ); // Def
-          setCurrentActionSubtype(
+          setLastActionQuality(
             scriptReducer.subtypesArray[wheelPositionOuter - 5]
           );
         } else {
+          // console.log("--- Bottom Left ---");
           wheelPositionOuter = 9;
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
-          setCurrentActionType(
-            scriptReducer.typesArray[wheelPositionMiddle - 1]
-          ); // Def
-          setCurrentActionSubtype(
+          setLastActionQuality(
             scriptReducer.subtypesArray[wheelPositionOuter - 5]
           );
         }
@@ -466,8 +434,8 @@ export default function ScriptingLive({ navigation }) {
       // Left
       wheelPositionMiddle = 3;
       handleSwipeColorChange(wheelPositionMiddle);
-      setCurrentActionType(scriptReducer.typesArray[wheelPositionMiddle - 1]); // Set
-      setCurrentActionSubtype("");
+      // setCurrentActionType(scriptReducer.typesArray[wheelPositionMiddle - 1]); // Set
+      // setCurrentActionSubtype("");
       if (!inMiddleCircle) {
         wheelPositionOuter = 10;
         if (relativeToPadCenterY > Math.abs(boundary15Y)) {
@@ -789,13 +757,13 @@ export default function ScriptingLive({ navigation }) {
       navigation={navigation}
       topChildren={topChildren}
     >
-      <View style={{ position: "absolute", left: 20, bottom: 10 }}>
+      {/* <View style={{ position: "absolute", left: 20, bottom: 10 }}>
         <Text>
           padPositionCenter: {padPositionCenter.x.toFixed(0)},{" "}
           {padPositionCenter.y.toFixed(0)}
         </Text>
         <Text>circleRadiusMiddle: {userReducer.circleRadiusMiddle}</Text>
-      </View>
+      </View> */}
       <ScriptingPortrait
         combinedGestures={combinedGestures}
         orientation={orientation}
