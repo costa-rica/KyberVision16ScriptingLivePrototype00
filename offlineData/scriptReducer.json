@@ -104,5 +104,51 @@
       "selected": false,
       "shirtNumber": 18
     }
+  ],
+  "sessionsArray": [
+    {
+      "id": 2,
+      "contractLeagueTeamId": 2,
+      "teamId": 2,
+      "sessionDate": "2025-03-15T19:00:00.000Z",
+      "createdAt": "2025-03-08T16:40:48.981Z",
+      "updatedAt": "2025-06-01T13:23:48.207Z",
+      "city": "Marseille",
+      "sessionDateString": "15 mars 20h00",
+      "selected": true
+    },
+    {
+      "id": 3,
+      "contractLeagueTeamId": 3,
+      "teamId": 2,
+      "sessionDate": "2025-05-26T22:00:00.000Z",
+      "createdAt": "2025-05-27T21:24:00.512Z",
+      "updatedAt": "2025-05-27T21:24:00.512Z",
+      "city": "Practice",
+      "sessionDateString": "27 mai 00h00",
+      "selected": false
+    },
+    {
+      "id": 16,
+      "contractLeagueTeamId": 2,
+      "teamId": 2,
+      "sessionDate": "2025-06-17T09:44:00.000Z",
+      "createdAt": "2025-06-17T09:45:11.409Z",
+      "updatedAt": "2025-06-17T09:45:11.409Z",
+      "city": "Practice",
+      "sessionDateString": "17 juin 11h44",
+      "selected": false
+    },
+    {
+      "id": 17,
+      "contractLeagueTeamId": 2,
+      "teamId": 2,
+      "sessionDate": "2025-06-17T13:32:00.000Z",
+      "createdAt": "2025-06-17T13:32:30.453Z",
+      "updatedAt": "2025-06-17T13:32:30.453Z",
+      "city": "Practice",
+      "sessionDateString": "17 juin 15h32",
+      "selected": false
+    }
   ]
 }

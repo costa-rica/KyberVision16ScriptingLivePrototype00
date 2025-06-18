@@ -8,7 +8,11 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import guestUserData from "../offlineData/userReducer.json";
 import { loginUser, updateTeamsArray } from "../reducers/user";
-import { updatePlayersArray } from "../reducers/script";
+import {
+  updatePlayersArray,
+  setScriptingForPlayerObject,
+  updateSessionsArray,
+} from "../reducers/script";
 import { useSelector } from "react-redux";
 
 export default function SplashScreen({ navigation }) {
@@ -32,6 +36,13 @@ export default function SplashScreen({ navigation }) {
     // console.log("userReducerOffline", userReducerOffline.teamsArray);
     const scriptReducerOffline = require("../offlineData/scriptReducer.json");
     dispatch(updatePlayersArray(scriptReducerOffline.playersArray));
+
+    dispatch(
+      setScriptingForPlayerObject(
+        scriptReducerOffline.playersArray.filter((player) => player.selected)[0]
+      )
+    );
+    dispatch(updateSessionsArray(scriptReducerOffline.sessionsArray));
     navigation.navigate("ScriptingLive");
   };
   return (
