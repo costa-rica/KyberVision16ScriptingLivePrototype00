@@ -69,6 +69,7 @@ export default function ScriptingLive({ navigation }) {
     lastActionDropDownIsVisibleSubtype,
     setLastActionDropDownIsVisibleSubtype,
   ] = useState(false);
+  const [showGrid, setShowGrid] = useState(true);
   // -------------
   // Orientation Stuff
   // -------------
@@ -301,6 +302,64 @@ export default function ScriptingLive({ navigation }) {
     if (distanceFromCenter > userReducer.circleRadiusInner) {
       // console.log(" !! Add action ");
       addNewActionToScriptReducersActionsArray();
+
+      console.log(
+        `tapDetails: ${tapDetails.padPosCenterX} - ${tapDetails.padPosCenterY}`
+      );
+
+      // tapDetails.padPosCenterY is adjusted on the y axis to account for the circle radius
+      const tapYAdjusted =
+        tapDetails.padPosCenterY + userReducer.circleRadiusOuter;
+      const tapXAdjusted =
+        tapDetails.padPosCenterX + userReducer.circleRadiusOuter;
+
+      console.log(
+        `half court line: ${
+          scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.y +
+          scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.height * 0.5
+        }`
+      );
+      if (
+        tapYAdjusted >
+        scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.y +
+          scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.height * 0.5
+      ) {
+        console.log("back row");
+        if (
+          tapXAdjusted >
+          scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.width * 0.66
+        ) {
+          console.log("right");
+          setLastActionPosition(1);
+        } else if (
+          tapXAdjusted >
+          scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.width * 0.33
+        ) {
+          console.log("middle");
+          setLastActionPosition(6);
+        } else {
+          console.log("left ");
+          setLastActionPosition(5);
+        }
+      } else {
+        console.log("front row");
+        if (
+          tapXAdjusted >
+          scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.width * 0.66
+        ) {
+          console.log("right");
+          setLastActionPosition(2);
+        } else if (
+          tapXAdjusted >
+          scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.width * 0.33
+        ) {
+          console.log("middle");
+          setLastActionPosition(3);
+        } else {
+          console.log("left ");
+          setLastActionPosition(4);
+        }
+      }
     } else {
       // console.log(" no action registered on this swipe ");
       if (
@@ -595,66 +654,66 @@ export default function ScriptingLive({ navigation }) {
     );
   };
 
-  const addNewActionToScriptReducersActionsArrayNoWheel = () => {
-    console.log(`triggered addNewActionToScriptReducersActionsArrayNoWheel -`);
-    const newActionObj = {
-      dateScripted: new Date().toISOString(), // Convert to ISO string
-      timestamp: new Date().toISOString(),
-      type: scriptReducer.typesArray[scriptReducer.typesArray.length - 1],
-      subtype:
-        scriptReducer.subtypesArray[scriptReducer.subtypesArray.length - 1],
-      quality: scriptReducer.qualityArray[2],
-      playerId: scriptReducer.scriptingForPlayerObject.id,
-      setNumber: 0,
-      scoreTeamAnalyzed: 0,
-      scoreTeamOpponent: 0,
-      rotation: scriptReducer.rotationArray[0],
-      opponentServed: false,
-      favorite: false,
-      sessionId: scriptReducer.sessionsArray.find((s) => s.selected).id,
-      playerId: scriptReducer.scriptingForPlayerObject.id,
-    };
+  // const addNewActionToScriptReducersActionsArrayNoWheel = () => {
+  //   console.log(`triggered addNewActionToScriptReducersActionsArrayNoWheel -`);
+  //   const newActionObj = {
+  //     dateScripted: new Date().toISOString(), // Convert to ISO string
+  //     timestamp: new Date().toISOString(),
+  //     type: scriptReducer.typesArray[scriptReducer.typesArray.length - 1],
+  //     subtype:
+  //       scriptReducer.subtypesArray[scriptReducer.subtypesArray.length - 1],
+  //     quality: scriptReducer.qualityArray[2],
+  //     playerId: scriptReducer.scriptingForPlayerObject.id,
+  //     setNumber: 0,
+  //     scoreTeamAnalyzed: 0,
+  //     scoreTeamOpponent: 0,
+  //     rotation: scriptReducer.rotationArray[0],
+  //     opponentServed: false,
+  //     favorite: false,
+  //     sessionId: scriptReducer.sessionsArray.find((s) => s.selected).id,
+  //     playerId: scriptReducer.scriptingForPlayerObject.id,
+  //   };
 
-    console.log("--- newActionObj ---");
-    console.log(newActionObj);
-    console.log("--- END newActionObj ---");
+  //   console.log("--- newActionObj ---");
+  //   console.log(newActionObj);
+  //   console.log("--- END newActionObj ---");
 
-    // create new array with
-    // let newScriptReducerActionArray = [
-    let newScriptReducerSessionActionsArray = [
-      ...scriptReducer.sessionActionsArray,
-      newActionObj,
-    ];
+  //   // create new array with
+  //   // let newScriptReducerActionArray = [
+  //   let newScriptReducerSessionActionsArray = [
+  //     ...scriptReducer.sessionActionsArray,
+  //     newActionObj,
+  //   ];
 
-    // sort
-    newScriptReducerSessionActionsArray.sort(
-      (a, b) => a.timeStamp - b.timeStamp
-    );
-    dispatch(
-      replaceScriptSessionActionsArray({
-        sessionActionsArray: newScriptReducerSessionActionsArray,
-      })
-    );
-    // Reset Last Action
-    setLastActionQuality("?");
-    setLastActionPosition("?");
-    setLastActionPlayer(scriptReducer.playersArray.find((p) => p.selected));
-    setLastActionType("?");
-    setLastActionSubtype("?");
-    // if (scriptReducerActionArray.length > 0) {
-    //   setScriptReducerActionArray([...scriptReducerActionArray, newActionObj]);
-    // } else {
-    //   setScriptReducerActionArray([newActionObj]);
-    // }
+  //   // sort
+  //   newScriptReducerSessionActionsArray.sort(
+  //     (a, b) => a.timeStamp - b.timeStamp
+  //   );
+  //   dispatch(
+  //     replaceScriptSessionActionsArray({
+  //       sessionActionsArray: newScriptReducerSessionActionsArray,
+  //     })
+  //   );
+  //   // Reset Last Action
+  //   setLastActionQuality("?");
+  //   setLastActionPosition("?");
+  //   setLastActionPlayer(scriptReducer.playersArray.find((p) => p.selected));
+  //   setLastActionType("?");
+  //   setLastActionSubtype("?");
+  //   // if (scriptReducerActionArray.length > 0) {
+  //   //   setScriptReducerActionArray([...scriptReducerActionArray, newActionObj]);
+  //   // } else {
+  //   //   setScriptReducerActionArray([newActionObj]);
+  //   // }
 
-    //setPadVisible(false);
-    //setTapIsActive(true);
-    // setSwipePadServeIsActive(false);
-    // setSwipePadReceptionIsActive(false);
-    // console.log(
-    //   "addNewActionToScriptReducersActionsArrayNoWheel: Working (end of function)"
-    // );
-  };
+  //   //setPadVisible(false);
+  //   //setTapIsActive(true);
+  //   // setSwipePadServeIsActive(false);
+  //   // setSwipePadReceptionIsActive(false);
+  //   // console.log(
+  //   //   "addNewActionToScriptReducersActionsArrayNoWheel: Working (end of function)"
+  //   // );
+  // };
   const sendScriptReducerSessionActionsArrayToServer = async () => {
     console.log("----> sendScriptReducerSessionActionsArrayToServer");
 
@@ -813,13 +872,107 @@ export default function ScriptingLive({ navigation }) {
       navigation={navigation}
       topChildren={topChildren}
     >
-      {/* <View style={{ position: "absolute", left: 20, bottom: 10 }}>
+      {/* {scriptReducer?.scriptLivePortraitVwVolleyballCourtCoords?.x && ( */}
+      <View style={{ position: "absolute", left: 20, bottom: 10 }}>
         <Text>
-          padPositionCenter: {padPositionCenter.x.toFixed(0)},{" "}
-          {padPositionCenter.y.toFixed(0)}
+          VwVolleyballCourtCoords X/Y:{" "}
+          {scriptReducer.scriptLivePortraitVwVolleyballCourtCoords?.x.toFixed(
+            0
+          )}
+          ,{" "}
+          {scriptReducer.scriptLivePortraitVwVolleyballCourtCoords?.y.toFixed(
+            0
+          )}
         </Text>
-        <Text>circleRadiusMiddle: {userReducer.circleRadiusMiddle}</Text>
-      </View> */}
+        <Text>
+          VwVolleyballCourtCoords Width/Height:{" "}
+          {scriptReducer.scriptLivePortraitVwVolleyballCourtCoords?.width.toFixed(
+            0
+          )}
+          ,{" "}
+          {scriptReducer.scriptLivePortraitVwVolleyballCourtCoords?.height.toFixed(
+            0
+          )}
+        </Text>
+        {/* <Text>
+          Half Court Line:{" "}
+          {scriptReducer.scriptLivePortraitVwVolleyballCourtCoords?.y +
+            scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.height *
+              0.5}
+        </Text> */}
+        <Text>
+          Third Court Line:{" "}
+          {scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.width * 0.33}
+        </Text>
+        <Text>
+          Two-Thirds Court Line:{" "}
+          {scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.width * 0.66}
+        </Text>
+      </View>
+      {/* )} */}
+      <View
+        style={{
+          position: "absolute",
+          top: 328,
+          width: scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.width,
+          height: 5,
+          backgroundColor: "red",
+          zIndex: 1,
+        }}
+      />
+      {showGrid && (
+        <View
+          style={{
+            position: "absolute",
+            top: scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.y,
+            left: 0,
+          }}
+        >
+          {/* Half Court Line */}
+          <View
+            style={{
+              position: "absolute",
+              top:
+                scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.height *
+                0.5,
+              width:
+                scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.width,
+              height: 2,
+              backgroundColor: "black",
+              zIndex: 1,
+            }}
+          />
+          {/* Left Side Line */}
+          <View
+            style={{
+              position: "absolute",
+              left:
+                scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.width /
+                3,
+              width: 2,
+              height:
+                scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.height,
+              backgroundColor: "black",
+              zIndex: 1,
+            }}
+          />
+          {/* Right Side Line */}
+          <View
+            style={{
+              position: "absolute",
+              left:
+                (scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.width *
+                  2) /
+                3,
+              width: 2,
+              height:
+                scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.height,
+              backgroundColor: "black",
+              zIndex: 1,
+            }}
+          />
+        </View>
+      )}
       <ScriptingPortrait
         combinedGestures={combinedGestures}
         orientation={orientation}
