@@ -124,7 +124,7 @@ export default function SplashScreen({ navigation }) {
             continue without login
           </ButtonKvStd>
           <Text style={{ position: "absolute", bottom: 10, right: 20 }}>
-            Kyber Vision Scripting Live Prototype Version 0.0.0
+            Kyber Vision Scripting Live Prototype Version 0.1.0
           </Text>
         </View>
       </View>
