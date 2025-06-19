@@ -12,7 +12,7 @@ import ScriptingLandscape from "./subcomponents/ScriptingLiveLandscape";
 import { Gesture } from "react-native-gesture-handler";
 import { useState } from "react";
 import * as ScreenOrientation from "expo-screen-orientation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   replaceScriptSessionActionsArray,
@@ -360,54 +360,60 @@ export default function ScriptingLive({ navigation }) {
           setLastActionPosition(4);
         }
       }
+      setLastActionType(
+        scriptReducer.typesArray[lastActionTypeIndexRef.current]
+      );
+      setLastActionQuality(
+        scriptReducer.qualityArrayOuterCircle[lastActionQualityIndexRef.current]
+      );
     } else {
       // console.log(" no action registered on this swipe ");
-      if (
-        scriptReducer.sessionActionsArray[
-          scriptReducer.sessionActionsArray.length - 1
-        ]?.type
-      ) {
-        console.log(" !! Last action registered on this swipe ");
-        setLastActionType(
-          scriptReducer.sessionActionsArray[
-            scriptReducer.sessionActionsArray.length - 1
-          ]?.type
-        );
-        // setLastActionSubtype(
-        //   scriptReducer.sessionActionsArray[
-        //     scriptReducer.sessionActionsArray.length - 1
-        //   ]?.subtype
-        // );
-        setLastActionQuality(
-          scriptReducer.sessionActionsArray[
-            scriptReducer.sessionActionsArray.length - 1
-          ]?.quality
-        );
-        // setLastActionPosition(
-        //   scriptReducer.sessionActionsArray[
-        //     scriptReducer.sessionActionsArray.length - 1
-        //   ]?.position
-        // );
-        // setLastActionPlayer(
-        //   scriptReducer.sessionActionsArray[
-        //     scriptReducer.sessionActionsArray.length - 1
-        //   ]?.player
-        // );
-      } else {
-        // console.log("no actions registered ever");
-        setLastActionType("?");
-        // setLastActionSubtype("?");
-        setLastActionQuality("?");
-        // setLastActionPosition("?");
-        // setLastActionPlayer("?");
-      }
-      console.log(
-        `lastActionType from array: ${
-          scriptReducer.sessionActionsArray[
-            scriptReducer.sessionActionsArray.length - 1
-          ]?.type
-        }`
-      );
+      // if (
+      //   scriptReducer.sessionActionsArray[
+      //     scriptReducer.sessionActionsArray.length - 1
+      //   ]?.type
+      // ) {
+      //   console.log(" !! Last action registered on this swipe ");
+      //   setLastActionType(
+      //     scriptReducer.sessionActionsArray[
+      //       scriptReducer.sessionActionsArray.length - 1
+      //     ]?.type
+      //   );
+      //   // setLastActionSubtype(
+      //   //   scriptReducer.sessionActionsArray[
+      //   //     scriptReducer.sessionActionsArray.length - 1
+      //   //   ]?.subtype
+      //   // );
+      //   setLastActionQuality(
+      //     scriptReducer.sessionActionsArray[
+      //       scriptReducer.sessionActionsArray.length - 1
+      //     ]?.quality
+      //   );
+      //   // setLastActionPosition(
+      //   //   scriptReducer.sessionActionsArray[
+      //   //     scriptReducer.sessionActionsArray.length - 1
+      //   //   ]?.position
+      //   // );
+      //   // setLastActionPlayer(
+      //   //   scriptReducer.sessionActionsArray[
+      //   //     scriptReducer.sessionActionsArray.length - 1
+      //   //   ]?.player
+      //   // );
+      // } else {
+      //   // console.log("no actions registered ever");
+      //   setLastActionType("?");
+      //   // setLastActionSubtype("?");
+      //   setLastActionQuality("?");
+      //   // setLastActionPosition("?");
+      //   // setLastActionPlayer("?");
+      // }
+      // console.log(
+      //   `lastActionType from array: ${
+      //     scriptReducer.sessionActionsArray[
+      //       scriptReducer.sessionActionsArray.length - 1
+      //     ]?.type
+      //   }`
+      // );
     }
   });
 
@@ -465,6 +471,9 @@ export default function ScriptingLive({ navigation }) {
     }
   };
 
+  const lastActionTypeIndexRef = useRef(null);
+  const lastActionQualityIndexRef = useRef(null);
+
   const logicFourTwelveCircle = (
     relativeToPadCenterX,
     relativeToPadCenterY,
@@ -485,110 +494,126 @@ export default function ScriptingLive({ navigation }) {
       // Right side
       wheelPositionMiddle = 1;
       handleSwipeColorChange(wheelPositionMiddle);
-      setLastActionType(scriptReducer.typesArray[wheelPositionMiddle - 1]);
+      // setLastActionType(scriptReducer.typesArray[wheelPositionMiddle - 1]);
+      lastActionTypeIndexRef.current = wheelPositionMiddle - 1;
       if (!inMiddleCircle) {
         wheelPositionOuter = 16; // like 16
         if (-relativeToPadCenterY > boundary15Y) {
           // console.log("--- Right Top ---");
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
-          setLastActionQuality(
-            scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
-          );
+          // setLastActionQuality(
+          //   scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
+          // );
+          lastActionQualityIndexRef.current = wheelPositionOuter - 5;
         } else if (Math.abs(relativeToPadCenterY) < boundary15Y) {
           // console.log("--- Right Middle ---");
           wheelPositionOuter = 5;
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
-          setLastActionQuality(
-            scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
-          );
+          // setLastActionQuality(
+          //   scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
+          // );
+          lastActionQualityIndexRef.current = wheelPositionOuter - 5;
         } else {
           // console.log("--- Right Bottom ---");
           wheelPositionOuter = 6;
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
-          setLastActionQuality(
-            scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
-          );
+          // setLastActionQuality(
+          //   scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
+          // );
+          lastActionQualityIndexRef.current = wheelPositionOuter - 5;
         }
       }
     } else if (relativeToPadCenterY > Math.abs(boundary45Y)) {
       // Bottom
       wheelPositionMiddle = 2;
       handleSwipeColorChange(wheelPositionMiddle);
-      setLastActionType(scriptReducer.typesArray[wheelPositionMiddle - 1]);
+      // setLastActionType(scriptReducer.typesArray[wheelPositionMiddle - 1]);
+      lastActionTypeIndexRef.current = wheelPositionMiddle - 1;
       if (!inMiddleCircle) {
         wheelPositionOuter = 7;
         if (relativeToPadCenterX > boundary75X) {
           // console.log("--- Bottom Right ---");
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
-          setLastActionQuality(
-            scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
-          );
+          // setLastActionQuality(
+          //   scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
+          // );
+          lastActionQualityIndexRef.current = wheelPositionOuter - 5;
         } else if (Math.abs(relativeToPadCenterX) < boundary75X) {
           // console.log("--- Bottom Middle ---");
           wheelPositionOuter = 8;
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
-          setLastActionQuality(
-            scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
-          );
+          // setLastActionQuality(
+          //   scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
+          // );
+          lastActionQualityIndexRef.current = wheelPositionOuter - 5;
         } else {
           // console.log("--- Bottom Left ---");
           wheelPositionOuter = 9;
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
-          setLastActionQuality(
-            scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
-          );
+          // setLastActionQuality(
+          //   scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
+          // );
+          lastActionQualityIndexRef.current = wheelPositionOuter - 5;
         }
       }
     } else if (relativeToPadCenterY > boundary45Y) {
       // Left
       wheelPositionMiddle = 3;
       handleSwipeColorChange(wheelPositionMiddle);
-      setLastActionType(scriptReducer.typesArray[wheelPositionMiddle - 1]);
+      // setLastActionType(scriptReducer.typesArray[wheelPositionMiddle - 1]);
+      lastActionTypeIndexRef.current = wheelPositionMiddle - 1;
       if (!inMiddleCircle) {
         wheelPositionOuter = 10;
         if (relativeToPadCenterY > Math.abs(boundary15Y)) {
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
-          setLastActionQuality(
-            scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
-          ); // Set
+          // setLastActionQuality(
+          //   scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
+          // ); // Set
+          lastActionQualityIndexRef.current = wheelPositionOuter - 5;
         } else if (relativeToPadCenterY > boundary15Y) {
           wheelPositionOuter = 11;
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
-          setLastActionQuality(
-            scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
-          ); // Set
+          // setLastActionQuality(
+          //   scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
+          // ); // Set
+          lastActionQualityIndexRef.current = wheelPositionOuter - 5;
         } else {
           wheelPositionOuter = 12;
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
-          setLastActionQuality(
-            scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
-          ); // Set
+          // setLastActionQuality(
+          //   scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
+          // ); // Set
+          lastActionQualityIndexRef.current = wheelPositionOuter - 5;
         }
       }
     } else if (relativeToPadCenterY < boundary45Y) {
       // Top
       wheelPositionMiddle = 4;
       handleSwipeColorChange(wheelPositionMiddle);
-      setLastActionType(scriptReducer.typesArray[wheelPositionMiddle - 1]);
+      // setLastActionType(scriptReducer.typesArray[wheelPositionMiddle - 1]);
+      lastActionTypeIndexRef.current = wheelPositionMiddle - 1;
       if (!inMiddleCircle) {
         wheelPositionOuter = 13;
         if (relativeToPadCenterX < boundary75X) {
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
-          setLastActionQuality(
-            scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
-          ); // Att
+          // setLastActionQuality(
+          //   scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
+          // ); // Att
+          lastActionQualityIndexRef.current = wheelPositionOuter - 5;
         } else if (relativeToPadCenterX < Math.abs(boundary75X)) {
           wheelPositionOuter = 14;
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
-          setLastActionQuality(
-            scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
-          ); // Att
+          // setLastActionQuality(
+          //   scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
+          // ); // Att
+          lastActionQualityIndexRef.current = wheelPositionOuter - 5;
         } else {
           wheelPositionOuter = 15;
           handleSwipeColorChange(wheelPositionMiddle, wheelPositionOuter);
-          setLastActionQuality(
-            scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
-          ); // Att
+          // setLastActionQuality(
+          //   scriptReducer.qualityArrayOuterCircle[wheelPositionOuter - 5]
+          // ); // Att
+          lastActionQualityIndexRef.current = wheelPositionOuter - 5;
         }
       }
     } else {
@@ -872,44 +897,46 @@ export default function ScriptingLive({ navigation }) {
       navigation={navigation}
       topChildren={topChildren}
     >
-      {/* {scriptReducer?.scriptLivePortraitVwVolleyballCourtCoords?.x && ( */}
-      <View style={{ position: "absolute", left: 20, bottom: 10 }}>
-        <Text>
-          VwVolleyballCourtCoords X/Y:{" "}
-          {scriptReducer.scriptLivePortraitVwVolleyballCourtCoords?.x.toFixed(
-            0
-          )}
-          ,{" "}
-          {scriptReducer.scriptLivePortraitVwVolleyballCourtCoords?.y.toFixed(
-            0
-          )}
-        </Text>
-        <Text>
-          VwVolleyballCourtCoords Width/Height:{" "}
-          {scriptReducer.scriptLivePortraitVwVolleyballCourtCoords?.width.toFixed(
-            0
-          )}
-          ,{" "}
-          {scriptReducer.scriptLivePortraitVwVolleyballCourtCoords?.height.toFixed(
-            0
-          )}
-        </Text>
-        {/* <Text>
+      {scriptReducer?.scriptLivePortraitVwVolleyballCourtCoords?.x && (
+        <View style={{ position: "absolute", left: 20, bottom: 10 }}>
+          <Text>
+            VwVolleyballCourtCoords X/Y:{" "}
+            {scriptReducer.scriptLivePortraitVwVolleyballCourtCoords?.x.toFixed(
+              0
+            )}
+            ,{" "}
+            {scriptReducer.scriptLivePortraitVwVolleyballCourtCoords?.y.toFixed(
+              0
+            )}
+          </Text>
+          <Text>
+            VwVolleyballCourtCoords Width/Height:{" "}
+            {scriptReducer.scriptLivePortraitVwVolleyballCourtCoords?.width.toFixed(
+              0
+            )}
+            ,{" "}
+            {scriptReducer.scriptLivePortraitVwVolleyballCourtCoords?.height.toFixed(
+              0
+            )}
+          </Text>
+          {/* <Text>
           Half Court Line:{" "}
           {scriptReducer.scriptLivePortraitVwVolleyballCourtCoords?.y +
             scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.height *
               0.5}
         </Text> */}
-        <Text>
-          Third Court Line:{" "}
-          {scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.width * 0.33}
-        </Text>
-        <Text>
-          Two-Thirds Court Line:{" "}
-          {scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.width * 0.66}
-        </Text>
-      </View>
-      {/* )} */}
+          <Text>
+            Third Court Line:{" "}
+            {scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.width *
+              0.33}
+          </Text>
+          <Text>
+            Two-Thirds Court Line:{" "}
+            {scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.width *
+              0.66}
+          </Text>
+        </View>
+      )}
       <View
         style={{
           position: "absolute",
