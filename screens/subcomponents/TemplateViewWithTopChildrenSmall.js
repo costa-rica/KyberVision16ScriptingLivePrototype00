@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import KyberVisionLogoCrystal from "../../assets/images/KyberVisionLogoCrystal.svg";
 
 export default function TemplateViewWithTopChildrenSmall({
-  children,
+  children = children || <View />,
   navigation,
   topChildren,
   sizeOfLogo = 30,
@@ -28,13 +28,13 @@ export default function TemplateViewWithTopChildrenSmall({
 
         {navigation && (
           <View style={styles.btnBack}>
-            {/* <ButtonKvImage
+            <ButtonKvImage
               onPress={() => {
                 handleBackPress();
               }}
             >
               <BackArrow style={styles.svgBackArrow} />
-            </ButtonKvImage> */}
+            </ButtonKvImage>
           </View>
         )}
         <View style={styles.vwLogoAndTopChildren}>
@@ -43,6 +43,7 @@ export default function TemplateViewWithTopChildrenSmall({
         </View>
       </View>
       <View style={styles.containerBottom}>{children}</View>
+      {/* {typeof children === "string" ? null : children} */}
     </View>
   );
 }

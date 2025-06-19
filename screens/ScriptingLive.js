@@ -69,7 +69,7 @@ export default function ScriptingLive({ navigation }) {
     lastActionDropDownIsVisibleSubtype,
     setLastActionDropDownIsVisibleSubtype,
   ] = useState(false);
-  const [showGrid, setShowGrid] = useState(true);
+  const [showGrid, setShowGrid] = useState(false);
   // -------------
   // Orientation Stuff
   // -------------
@@ -366,6 +366,7 @@ export default function ScriptingLive({ navigation }) {
       setLastActionQuality(
         scriptReducer.qualityArrayOuterCircle[lastActionQualityIndexRef.current]
       );
+      setLastActionSubtype("?");
     } else {
       // console.log(" no action registered on this swipe ");
       // if (
@@ -897,7 +898,7 @@ export default function ScriptingLive({ navigation }) {
       navigation={navigation}
       topChildren={topChildren}
     >
-      {scriptReducer?.scriptLivePortraitVwVolleyballCourtCoords?.x && (
+      {/* {scriptReducer?.scriptLivePortraitVwVolleyballCourtCoords?.x && (
         <View style={{ position: "absolute", left: 20, bottom: 10 }}>
           <Text>
             VwVolleyballCourtCoords X/Y:{" "}
@@ -919,12 +920,7 @@ export default function ScriptingLive({ navigation }) {
               0
             )}
           </Text>
-          {/* <Text>
-          Half Court Line:{" "}
-          {scriptReducer.scriptLivePortraitVwVolleyballCourtCoords?.y +
-            scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.height *
-              0.5}
-        </Text> */}
+
           <Text>
             Third Court Line:{" "}
             {scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.width *
@@ -936,17 +932,8 @@ export default function ScriptingLive({ navigation }) {
               0.66}
           </Text>
         </View>
-      )}
-      <View
-        style={{
-          position: "absolute",
-          top: 328,
-          width: scriptReducer.scriptLivePortraitVwVolleyballCourtCoords.width,
-          height: 5,
-          backgroundColor: "red",
-          zIndex: 1,
-        }}
-      />
+      )} */}
+
       {showGrid && (
         <View
           style={{
