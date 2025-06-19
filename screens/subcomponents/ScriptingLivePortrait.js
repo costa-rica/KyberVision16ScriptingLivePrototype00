@@ -30,7 +30,7 @@ import Lightning from "../../assets/images/lightning.svg";
 import { useSelector, useDispatch } from "react-redux";
 import {
   updateScriptLivePortraitVwVolleyballCourtCoords,
-  replaceScriptMatchActionsArray,
+  replaceScriptSessionActionsArray,
 } from "../../reducers/script";
 
 export default function ScriptingLivePortrait(props) {
@@ -145,7 +145,7 @@ export default function ScriptingLivePortrait(props) {
                   }
                   style={[
                     styles.touchOpSetsCircle,
-                    props.matchSetsWon.teamAnalyzed > index &&
+                    props.sessionSetsWon.teamAnalyzed > index &&
                       styles.touchOpSetsCircleFilled,
                   ]}
                 />
@@ -209,7 +209,7 @@ export default function ScriptingLivePortrait(props) {
                   }
                   style={[
                     styles.touchOpSetsCircle,
-                    props.matchSetsWon.teamOpponent > index &&
+                    props.sessionSetsWon.teamOpponent > index &&
                       styles.touchOpSetsCircleFilled,
                   ]}
                 />
@@ -459,7 +459,7 @@ export default function ScriptingLivePortrait(props) {
               onPress={() => {
                 console.log("pressed service");
                 dispatch(
-                  replaceScriptMatchActionsArray({ matchActionsArray: [] })
+                  replaceScriptSessionActionsArray({ sessionActionsArray: [] })
                 );
               }}
               style={styles.btnRallyGroupBottom}
@@ -513,12 +513,12 @@ export default function ScriptingLivePortrait(props) {
           <View style={styles.vwScriptDetails}>
             <Text style={{ color: "#806181" }}>
               {" "}
-              {scriptReducer.matchActionsArray.length} actions recorded
+              {scriptReducer.sessionActionsArray.length} actions recorded
             </Text>
             <Text style={{ fontStyle: "italic", color: "#806181" }}>
               {" "}
               {
-                scriptReducer.matchActionsArray.filter(
+                scriptReducer.sessionActionsArray.filter(
                   (action) => action.favorite
                 ).length
               }{" "}
@@ -529,8 +529,8 @@ export default function ScriptingLivePortrait(props) {
             <ButtonKvStd
               onPress={() => {
                 console.log("pressed send script");
-                // console.log(scriptReducer.matchActionsArray);
-                props.sendScriptReducerMatchActionsArrayToServer();
+                // console.log(scriptReducer.sessionActionsArray);
+                props.sendScriptReducerSessionActionsArrayToServer();
               }}
               style={{
                 backgroundColor: "#806181",

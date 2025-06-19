@@ -15,7 +15,7 @@ import * as ScreenOrientation from "expo-screen-orientation";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  replaceScriptMatchActionsArray,
+  replaceScriptSessionActionsArray,
   updatePlayersArray,
   setScriptingForPlayerObject,
   updateScriptId,
@@ -38,7 +38,7 @@ export default function ScriptingLive({ navigation }) {
     teamAnalyzed: 0,
     teamOpponent: 0,
   });
-  const [matchSetsWon, setMatchSetsWon] = useState({
+  const [sessionSetsWon, setSessionSetsWon] = useState({
     teamAnalyzed: 0,
     teamOpponent: 0,
   });
@@ -294,12 +294,62 @@ export default function ScriptingLive({ navigation }) {
         Math.pow(swipePosY - tapDetails.padPosCenterY, 2)
     );
 
-    // if (distanceFromCenter > userReducer.circleRadiusInner) {
-    //   addNewActionToScriptReducersActionsArray({
-    //     type: currentActionType,
-    //     subtype: currentActionSubtype,
-    //   });
-    // }
+    // NOTE: the logic here is if the swipe is outside the inner circle then add a new action to the sessionActionsArray
+    // - if the swipe is inside the inner circle then do either:
+    // -- if no actions recorded in sessionActionsArray then reset to "?"
+    // -- if actions recorded in sessionActionsArray then update to the last action in the sessionActionsArray
+    if (distanceFromCenter > userReducer.circleRadiusInner) {
+      // console.log(" !! Add action ");
+      addNewActionToScriptReducersActionsArray();
+    } else {
+      // console.log(" no action registered on this swipe ");
+      if (
+        scriptReducer.sessionActionsArray[
+          scriptReducer.sessionActionsArray.length - 1
+        ]?.type
+      ) {
+        console.log(" !! Last action registered on this swipe ");
+        setLastActionType(
+          scriptReducer.sessionActionsArray[
+            scriptReducer.sessionActionsArray.length - 1
+          ]?.type
+        );
+        // setLastActionSubtype(
+        //   scriptReducer.sessionActionsArray[
+        //     scriptReducer.sessionActionsArray.length - 1
+        //   ]?.subtype
+        // );
+        setLastActionQuality(
+          scriptReducer.sessionActionsArray[
+            scriptReducer.sessionActionsArray.length - 1
+          ]?.quality
+        );
+        // setLastActionPosition(
+        //   scriptReducer.sessionActionsArray[
+        //     scriptReducer.sessionActionsArray.length - 1
+        //   ]?.position
+        // );
+        // setLastActionPlayer(
+        //   scriptReducer.sessionActionsArray[
+        //     scriptReducer.sessionActionsArray.length - 1
+        //   ]?.player
+        // );
+      } else {
+        // console.log("no actions registered ever");
+        setLastActionType("?");
+        // setLastActionSubtype("?");
+        setLastActionQuality("?");
+        // setLastActionPosition("?");
+        // setLastActionPlayer("?");
+      }
+      console.log(
+        `lastActionType from array: ${
+          scriptReducer.sessionActionsArray[
+            scriptReducer.sessionActionsArray.length - 1
+          ]?.type
+        }`
+      );
+    }
   });
 
   const combinedGestures = Gesture.Simultaneous(
@@ -483,6 +533,7 @@ export default function ScriptingLive({ navigation }) {
         }
       }
     } else {
+      console.log(" !! Not add action ");
       setSwipeColorDict(userReducer.defaultWheelColors);
     }
   };
@@ -513,6 +564,37 @@ export default function ScriptingLive({ navigation }) {
   // -----------------
   //  Add Action
   // -----------------
+  const addNewActionToScriptReducersActionsArray = () => {
+    // console.log(`triggered addNewActionToScriptReducersActionsArray -`);
+    const newActionObj = {
+      dateScripted: new Date().toISOString(), // Convert to ISO string
+      timestamp: new Date().toISOString(),
+      type: lastActionType,
+      subtype: lastActionSubtype,
+      quality: lastActionQuality,
+      playerId: scriptReducer.scriptingForPlayerObject.id,
+      setNumber: 0,
+      scoreTeamAnalyzed: 0,
+      scoreTeamOpponent: 0,
+      // rotation: scriptReducer.rotationArray[0],
+      rotation: "rotation not set yet",
+      opponentServed: false,
+      favorite: false,
+      sessionId: scriptReducer.sessionsArray.find((s) => s.selected).id,
+      playerId: scriptReducer.scriptingForPlayerObject.id,
+    };
+
+    // console.log("--- newActionObj ---");
+    // console.log(newActionObj);
+    // console.log("--- END newActionObj ---");
+
+    let tempArray = [...scriptReducer.sessionActionsArray, newActionObj];
+    tempArray.sort((a, b) => a.timestamp - b.timestamp);
+    dispatch(
+      replaceScriptSessionActionsArray({ sessionActionsArray: tempArray })
+    );
+  };
+
   const addNewActionToScriptReducersActionsArrayNoWheel = () => {
     console.log(`triggered addNewActionToScriptReducersActionsArrayNoWheel -`);
     const newActionObj = {
@@ -539,16 +621,18 @@ export default function ScriptingLive({ navigation }) {
 
     // create new array with
     // let newScriptReducerActionArray = [
-    let newScriptReducerMatchActionsArray = [
-      ...scriptReducer.matchActionsArray,
+    let newScriptReducerSessionActionsArray = [
+      ...scriptReducer.sessionActionsArray,
       newActionObj,
     ];
 
     // sort
-    newScriptReducerMatchActionsArray.sort((a, b) => a.timeStamp - b.timeStamp);
+    newScriptReducerSessionActionsArray.sort(
+      (a, b) => a.timeStamp - b.timeStamp
+    );
     dispatch(
-      replaceScriptMatchActionsArray({
-        matchActionsArray: newScriptReducerMatchActionsArray,
+      replaceScriptSessionActionsArray({
+        sessionActionsArray: newScriptReducerSessionActionsArray,
       })
     );
     // Reset Last Action
@@ -571,15 +655,15 @@ export default function ScriptingLive({ navigation }) {
     //   "addNewActionToScriptReducersActionsArrayNoWheel: Working (end of function)"
     // );
   };
-  const sendScriptReducerMatchActionsArrayToServer = async () => {
-    console.log("----> sendScriptReducerMatchActionsArrayToServer");
+  const sendScriptReducerSessionActionsArrayToServer = async () => {
+    console.log("----> sendScriptReducerSessionActionsArrayToServer");
 
     alert("Sending recorded actions to Kyber Vision Database");
 
     const bodyObj = {
-      actionsArray: scriptReducer.matchActionsArray,
-      // matchId: userReducer.teamsArray.filter((tribe) => tribe.selected)[0]
-      //   .practiceMatch.id,
+      actionsArray: scriptReducer.sessionActionsArray,
+      // sessionId: userReducer.teamsArray.filter((tribe) => tribe.selected)[0]
+      //   .practiceSession.id,
       sessionId: scriptReducer.sessionsArray.find((s) => s.selected).id,
       scriptId: scriptReducer.scriptId,
     };
@@ -649,26 +733,26 @@ export default function ScriptingLive({ navigation }) {
   // Expects team: "analyzed" | "opponent"
   const handleSetCirclePress = (team, setIndex) => {
     if (team === "analyzed") {
-      if (matchSetsWon.teamAnalyzed === setIndex) {
-        setMatchSetsWon({
+      if (sessionSetsWon.teamAnalyzed === setIndex) {
+        setSessionSetsWon({
           teamAnalyzed: setIndex - 1,
-          teamOpponent: matchSetsWon.teamOpponent,
+          teamOpponent: sessionSetsWon.teamOpponent,
         });
-      } else if (matchSetsWon.teamAnalyzed + 1 === setIndex) {
-        setMatchSetsWon({
+      } else if (sessionSetsWon.teamAnalyzed + 1 === setIndex) {
+        setSessionSetsWon({
           teamAnalyzed: setIndex,
-          teamOpponent: matchSetsWon.teamOpponent,
+          teamOpponent: sessionSetsWon.teamOpponent,
         });
       }
     } else {
-      if (matchSetsWon.teamOpponent === setIndex) {
-        setMatchSetsWon({
-          teamAnalyzed: matchSetsWon.teamAnalyzed,
+      if (sessionSetsWon.teamOpponent === setIndex) {
+        setSessionSetsWon({
+          teamAnalyzed: sessionSetsWon.teamAnalyzed,
           teamOpponent: setIndex - 1,
         });
-      } else if (matchSetsWon.teamOpponent + 1 === setIndex) {
-        setMatchSetsWon({
-          teamAnalyzed: matchSetsWon.teamAnalyzed,
+      } else if (sessionSetsWon.teamOpponent + 1 === setIndex) {
+        setSessionSetsWon({
+          teamAnalyzed: sessionSetsWon.teamAnalyzed,
           teamOpponent: setIndex,
         });
       }
@@ -740,7 +824,7 @@ export default function ScriptingLive({ navigation }) {
         combinedGestures={combinedGestures}
         orientation={orientation}
         setScores={setScores}
-        matchSetsWon={matchSetsWon}
+        sessionSetsWon={sessionSetsWon}
         handleSetCirclePress={handleSetCirclePress}
         handleSetScorePress={handleSetScorePress}
         // ----------- Dropdowns Value -----------
@@ -781,8 +865,8 @@ export default function ScriptingLive({ navigation }) {
         setLastActionDropDownIsVisibleSubtype={
           setLastActionDropDownIsVisibleSubtype
         }
-        sendScriptReducerMatchActionsArrayToServer={
-          sendScriptReducerMatchActionsArrayToServer
+        sendScriptReducerSessionActionsArrayToServer={
+          sendScriptReducerSessionActionsArrayToServer
         }
       />
       {/* {circlePosition.y > 0 && <View style={stylesCircle} />} */}
@@ -794,7 +878,7 @@ export default function ScriptingLive({ navigation }) {
         combinedGestures={combinedGestures}
         orientation={orientation}
         setScores={setScores}
-        matchSetsWon={matchSetsWon}
+        sessionSetsWon={sessionSetsWon}
         handleSetCirclePress={handleSetCirclePress}
         handleSetScorePress={handleSetScorePress}
         lastActionQuality={lastActionQuality}
@@ -835,8 +919,8 @@ export default function ScriptingLive({ navigation }) {
         setLastActionDropDownIsVisibleSubtype={
           setLastActionDropDownIsVisibleSubtype
         }
-        sendScriptReducerMatchActionsArrayToServer={
-          sendScriptReducerMatchActionsArrayToServer
+        sendScriptReducerSessionActionsArrayToServer={
+          sendScriptReducerSessionActionsArrayToServer
         }
       />
       <View style={stylesCircle} />

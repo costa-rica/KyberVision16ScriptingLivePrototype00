@@ -50,12 +50,12 @@ const initialState = {
     9: "#BD9AC1",
     10: "#BD9AC1",
     11: "#BD9AC1",
-    // 12: "#BD9AC1",
-    // 13: "#BD9AC1",
-    // 14: "#BD9AC1",
-    // 15: "#BD9AC1",
-    // 16: "#BD9AC1",
-    // center: "white",
+    12: "#BD9AC1",
+    13: "#BD9AC1",
+    14: "#BD9AC1",
+    15: "#BD9AC1",
+    16: "#BD9AC1",
+    center: "#BD9AC1",
   },
   swipePadTextStyleMiddleCircle: Object.fromEntries(
     Array.from({ length: 4 }, (_, i) => [
